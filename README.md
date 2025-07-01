@@ -24,7 +24,7 @@ The variables are:
 
 	b: width
 
-	p: place "stuff" (T or F)
+	p: place map_pins (T or F)
 
 Note if you make (a) smaller then min-shapesY and (b) smaller then min-shapesX, you may create an infinite loop
 

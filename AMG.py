@@ -52,7 +52,7 @@ presets = {
 # Function that creates the basic map, defines stuff like size, legend, positions on left/right side, ect
 def Start(s):
     global MAP
-    global stuff
+    global map_pins 
     global PIL
     global Legend 
     global shapes
@@ -65,7 +65,7 @@ def Start(s):
     global LS 
     global RS
     global p
-    stuff = ["*", "@", "!", ".", "+", "%", "&", "$", "#"]
+    map_pins = ["*", "@", "!", ".", "+", "%", "&", "$", "#"]
     PIL = []
     MAP = {}
     if s == "1":
@@ -336,17 +336,17 @@ def Clear():
 def AddStuff():
     global MAP
     global PIL
-    global stuff
+    global map_pins 
     global p
     if p == "T":
         for i in MAP:
             if MAP[i] == " ":
                 if random.randint(0, 25) == 1:
-                    MAP[i] = random.choice(stuff)
+                    MAP[i] = random.choice(map_pins)
                     if MAP[i] not in PIL:
                         PIL.append(MAP[i])
                     if MAP[i] in ["@", "&", "+", "%", "#"]:
-                        stuff.remove(MAP[i])
+                        map_pins.remove(MAP[i])
 
 # Function that creats the Legend
 def LegendC():
