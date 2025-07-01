@@ -18,7 +18,5 @@ The variables are:
 
 	c: number of times the cutter function will run (curves sharp edges)
 
-	p: place map_pins (T or F)
-
 Note if you make (a) smaller then min-shapesY and (b) smaller then min-shapesX, you may create an infinite loop
 
