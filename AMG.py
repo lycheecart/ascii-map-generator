@@ -348,7 +348,7 @@ def AddStuff():
                     MAP[i] = random.choice(stuff)
                     if MAP[i] not in PIL:
                         PIL.append(MAP[i])
-                    if MAP[i] == "@" or MAP[i] == "&" or MAP[i] == "+" or MAP[i] == "%" or MAP[i] == "#":
+                    if MAP[i] in ["@", "&", "+", "%", "#"]:
                         stuff.remove(MAP[i])
 
 # Function that creats the Legend
