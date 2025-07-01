@@ -120,9 +120,6 @@ def Start(s):
         RS.append(y)
         i += 1
 
-def Dnamer():
-    return random.choice(["Scar             |","Kainto           |","Flea             |", "Botron           |", "Frot             |", "Clotenomen       |", "Fimotrin         |", "Death            |"])
-
 # Function that prints the map to the console
 def PrintM():
     global a
