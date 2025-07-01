@@ -149,10 +149,7 @@ def CPlaceB(x):
     global width
     y = int(x/width) + 1
     t = x - ((y - 1)*width)
-    if (t + shapes[Box]["x"]) <= width and (y + shapes[Box]["y"]) <= length:
-        return True
-    else:
-        return False
+    return ((t + shapes[Box]["x"]) <= width and (y + shapes[Box]["y"]) <= length)
 
 # Function that places Box on x
 def PlaceB(i):
