@@ -120,17 +120,6 @@ def Start(s):
         RS.append(y)
         i += 1
 
-# Functions that name stuff
-def Namer():
-    FP = random.choice(["Str","Tra","Kle","Olc", "Mat", "Wir", "Sle", "Pad", "Lat"])
-    SP = random.choice(["ait","cre","zat","tor", "lin", "dly", "waz", "ken", "mon"])
-    return FP + SP
-
-def Hnamer():
-    FP = random.choice(["Mikker","Wimmly","Jarmit", "FiFyFo", "Peeter", "Nipnoe", "Padfot", "??????"])
-    SP = random.choice(["Bold  |","Stong |","Fast  |","Large |", "Small |", "Fat   |", "Stuped|", "Smart |", "Fine  |"])
-    return FP + " the " + SP
-
 def Dnamer():
     return random.choice(["Scar             |","Kainto           |","Flea             |", "Botron           |", "Frot             |", "Clotenomen       |", "Fimotrin         |", "Death            |"])
 
@@ -368,9 +357,19 @@ def LegendC():
     global Legend
     global MAP
     global b
-    Name = Namer()
-    Hname = Hnamer()
-    Dname = Dnamer()
+    Name  = random.choice(["Str","Tra","Kle","Olc", "Mat", "Wir", "Sle", "Pad", "Lat"]) + \
+            random.choice(["ait","cre","zat","tor", "lin", "dly", "waz", "ken", "mon"])
+    Hname = random.choice(["Mikker","Wimmly","Jarmit", "FiFyFo", "Peeter", "Nipnoe", "Padfot", "??????"]) + \
+            " the " + \
+            random.choice(["Bold  |","Stong |","Fast  |","Large |", "Small |", "Fat   |", "Stuped|", "Smart |", "Fine  |"])
+    Dname = random.choice(["Scar             |", \
+                           "Kainto           |", \
+                           "Flea             |", \
+                           "Botron           |", \
+                           "Frot             |", \
+                           "Clotenomen       |", \
+                           "Fimotrin         |", \
+                           "Death            |"])
     Meaning = {
     "*": "Lake             |",
     "@": Hname,
