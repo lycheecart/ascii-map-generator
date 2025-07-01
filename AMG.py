@@ -40,13 +40,13 @@ shapes5 = {
 }
 
 presets = {
-    "1 - Pocket sized" : {"Set": 1, "a": 15, "b": 25, "shapes": shapes1, "c": 2, "numberOfIslands": 5, "p": "T"},
-    "2 - Long" : {"Set": 2, "a": 500, "b": 100, "shapes": shapes3, "c": 3, "numberOfIslands": 100, "p": "T"},
-    "3 - Mess" : {"Set": 3, "a": 36, "b": 100, "shapes": shapes0, "c": 0, "numberOfIslands": 1000, "p": "F"},
-    "4 - Box" : {"Set": 4, "a": 36, "b": 100, "shapes": shapes2, "c": 0, "numberOfIslands": 20, "p": "T"},
-    "5 - Islands" : {"Set": 5, "a": 25, "b": 75, "shapes": shapes4, "c": 0, "numberOfIslands": 25, "p": "T"},
-    "6 - Waterland" : {"Set": 6, "a": 20, "b": 50, "shapes": shapes0, "c": 1, "numberOfIslands": 1500, "p": "F"},
-    "7 - Blob" : {"Set": 7, "a": 36, "b": 100, "shapes": shapes5, "c": 20, "numberOfIslands": 3, "p": "F"},
+    "1 - Pocket sized" : {"Set": 1, "length": 15, "width": 25, "shapes": shapes1, "c": 2, "numberOfIslands": 5, "p": "T"},
+    "2 - Long" : {"Set": 2, "length": 500, "width": 100, "shapes": shapes3, "c": 3, "numberOfIslands": 100, "p": "T"},
+    "3 - Mess" : {"Set": 3, "length": 36, "width": 100, "shapes": shapes0, "c": 0, "numberOfIslands": 1000, "p": "F"},
+    "4 - Box" : {"Set": 4, "length": 36, "width": 100, "shapes": shapes2, "c": 0, "numberOfIslands": 20, "p": "T"},
+    "5 - Islands" : {"Set": 5, "length": 25, "width": 75, "shapes": shapes4, "c": 0, "numberOfIslands": 25, "p": "T"},
+    "6 - Waterland" : {"Set": 6, "length": 20, "width": 50, "shapes": shapes0, "c": 1, "numberOfIslands": 1500, "p": "F"},
+    "7 - Blob" : {"Set": 7, "length": 36, "width": 100, "shapes": shapes5, "c": 20, "numberOfIslands": 3, "p": "F"},
 }
 
 # Function that creates the basic map, defines stuff like size, legend, positions on left/right side, ect
@@ -58,8 +58,8 @@ def Start(s):
     global shapes
     global presets
     global numberOfIslands
-    global a
-    global b
+    global length
+    global width
     global A
     global c
     global LS 
@@ -72,22 +72,22 @@ def Start(s):
         shapes = shapes1
         numberOfIslands = 7
         c = 2
-        a = 18
-        b = 40
+        length = 18
+        width = 40
         p = "T"
     elif s == "2":
         shapes = shapes2
         numberOfIslands = 15
         c = 3
-        a = 36
-        b = 100
+        length = 36
+        width = 100
         p = "T"
     elif s == "3":
         shapes = shapes2
         numberOfIslands = 50
         c = 4
-        a = 48
-        b = 191
+        length = 48
+        width = 191
         p = "T"
     else:
         for i in presets:
@@ -98,39 +98,39 @@ def Start(s):
                 shapes = presets[i]["shapes"]
                 numberOfIslands = presets[i]["numberOfIslands"]
                 c = presets[i]["c"]
-                a = presets[i]["a"]
-                b = presets[i]["b"]
+                length = presets[i]["length"]
+                width = presets[i]["width"]
                 p = presets[i]["p"]
-    A = a*b
+    A = length*width
     MAP = {}
     for x in range(A):
         MAP[x] = "~"
-    RS = [b]
+    RS = [width]
     LS = [0]
     i = 0
     y = 0
-    while i != a:
-        y += b
+    while i != length:
+        y += width
         LS.append(y)
         i += 1
     i = 0
     y = 0
-    while i != a:
-        y += b
+    while i != length:
+        y += width
         RS.append(y)
         i += 1
 
 # Function that prints the map to the console
 def PrintM():
-    global a
-    global b
+    global length
+    global width
     global MAP
     global Legend
     c = 0
     x = 0
     i = 0
-    for i in range(a):
-        for x in range(b):
+    for i in range(length):
+        for x in range(width):
             print(MAP[c], end = "")
             x += 1
             c += 1
@@ -145,11 +145,11 @@ def PrintM():
 def CPlaceB(x):
     global MAP
     global Box
-    global a
-    global b
-    y = int(x/b) + 1
-    t = x - ((y - 1)*b)
-    if (t + shapes[Box]["x"]) <= b and (y + shapes[Box]["y"]) <= a:
+    global length
+    global width
+    y = int(x/width) + 1
+    t = x - ((y - 1)*width)
+    if (t + shapes[Box]["x"]) <= width and (y + shapes[Box]["y"]) <= length:
         return True
     else:
         return False
@@ -157,8 +157,7 @@ def CPlaceB(x):
 # Function that places Box on x
 def PlaceB(i):
     global Box
-    global a
-    global b
+    global width
     global MAP
     y = 0
     x = 0
@@ -167,7 +166,7 @@ def PlaceB(i):
             MAP[i] = "#"
             i +=1
             x += 1
-        i += (b - shapes[Box]["x"])
+        i += (width - shapes[Box]["x"])
         y += 1
         x = 0
 
@@ -175,8 +174,6 @@ def PlaceB(i):
 def AddB():
     global Box
     global A
-    global b
-    global a
     Box = random.choice(list(shapes.keys()))
     while True:
             i = random.randint(-1,(A))
@@ -187,7 +184,7 @@ def AddB():
 # Function that smooths out long corners
 def Curve():
     global MAP
-    global b
+    global width
     global c
     global RS
     global LS
@@ -198,7 +195,7 @@ def Curve():
             if MAP[i] == "#":
                 Sides = 0
                 # - U
-                x = i - b
+                x = i - width
                 try:
                     a = MAP[x]
                 except:
@@ -207,7 +204,7 @@ def Curve():
                     Sides += 1
                 # - U
                 # - D
-                x = i + b
+                x = i + width
                 try:
                     a = MAP[x]
                 except:
@@ -256,14 +253,14 @@ def Curve():
 # Function that replaces the outline of the rectangles with ascii art
 def Outline():
     global MAP
-    global b
+    global width
     global LS
     global RS
     for i in MAP:
         if MAP[i] == "#":
             Sides = {"U": 0, "D": 0, "L": 0, "R": 0}
             # - U
-            x = i - b
+            x = i - width
             try:
                 a = MAP[x]
             except:
@@ -272,7 +269,7 @@ def Outline():
                 Sides["U"] = 1
             # - U
             # - D
-            x = i + b
+            x = i + width
             try:
                 a = MAP[x]
             except:
@@ -353,7 +350,7 @@ def LegendC():
     global PIL
     global Legend
     global MAP
-    global b
+    global width
     Name  = random.choice(["Str","Tra","Kle","Olc", "Mat", "Wir", "Sle", "Pad", "Lat"]) + \
             random.choice(["ait","cre","zat","tor", "lin", "dly", "waz", "ken", "mon"])
     Hname = random.choice(["Mikker","Wimmly","Jarmit", "FiFyFo", "Peeter", "Nipnoe", "Padfot", "??????"]) + \
@@ -387,12 +384,12 @@ def LegendC():
     for i in PIL:
         Legend[n] = " | " + i + " = " + Meaning[i]
         n += 1
-    Legend[a - 1] = " +----------------------+"
-    MAP[b + 2] = "N"
-    MAP[b*2 + 1] = "W"
-    MAP[b*2 + 2] = "+"
-    MAP[b*2 + 3] = "E"
-    MAP[b*3 + 2] = "S"
+    Legend[length - 1] = " +----------------------+"
+    MAP[width + 2] = "N"
+    MAP[width*2 + 1] = "W"
+    MAP[width*2 + 2] = "+"
+    MAP[width*2 + 3] = "E"
+    MAP[width*3 + 2] = "S"
         
 
 def main():
