@@ -40,13 +40,13 @@ shapes5 = {
 }
 
 presets = {
-    "1 - Pocket sized" : {"Set": 1, "length": 15, "width": 25, "shapes": shapes1, "c": 2, "numberOfIslands": 5, "p": "T"},
-    "2 - Long" : {"Set": 2, "length": 500, "width": 100, "shapes": shapes3, "c": 3, "numberOfIslands": 100, "p": "T"},
-    "3 - Mess" : {"Set": 3, "length": 36, "width": 100, "shapes": shapes0, "c": 0, "numberOfIslands": 1000, "p": "F"},
-    "4 - Box" : {"Set": 4, "length": 36, "width": 100, "shapes": shapes2, "c": 0, "numberOfIslands": 20, "p": "T"},
-    "5 - Islands" : {"Set": 5, "length": 25, "width": 75, "shapes": shapes4, "c": 0, "numberOfIslands": 25, "p": "T"},
-    "6 - Waterland" : {"Set": 6, "length": 20, "width": 50, "shapes": shapes0, "c": 1, "numberOfIslands": 1500, "p": "F"},
-    "7 - Blob" : {"Set": 7, "length": 36, "width": 100, "shapes": shapes5, "c": 20, "numberOfIslands": 3, "p": "F"},
+    "1 - Pocket sized" : {"Set": 1, "length": 15, "width": 25, "shapes": shapes1, "numberOfCuts": 2, "numberOfIslands": 5, "placeMapPins": "T"},
+    "2 - Long" : {"Set": 2, "length": 500, "width": 100, "shapes": shapes3, "numberOfCuts": 3, "numberOfIslands": 100, "placeMapPins": "T"},
+    "3 - Mess" : {"Set": 3, "length": 36, "width": 100, "shapes": shapes0, "numberOfCuts": 0, "numberOfIslands": 1000, "placeMapPins": "F"},
+    "4 - Box" : {"Set": 4, "length": 36, "width": 100, "shapes": shapes2, "numberOfCuts": 0, "numberOfIslands": 20, "placeMapPins": "T"},
+    "5 - Islands" : {"Set": 5, "length": 25, "width": 75, "shapes": shapes4, "numberOfCuts": 0, "numberOfIslands": 25, "placeMapPins": "T"},
+    "6 - Waterland" : {"Set": 6, "length": 20, "width": 50, "shapes": shapes0, "numberOfCuts": 1, "numberOfIslands": 1500, "placeMapPins": "F"},
+    "7 - Blob" : {"Set": 7, "length": 36, "width": 100, "shapes": shapes5, "numberOfCuts": 20, "numberOfIslands": 3, "placeMapPins": "F"},
 }
 
 # Function that creates the basic map, defines stuff like size, legend, positions on left/right side, ect
@@ -61,34 +61,34 @@ def Start(s):
     global length
     global width
     global A
-    global c
+    global numberOfCuts
     global LS 
     global RS
-    global p
+    global placeMapPins
     map_pins = ["*", "@", "!", ".", "+", "%", "&", "$", "#"]
     PIL = []
     MAP = {}
     if s == "1":
         shapes = shapes1
         numberOfIslands = 7
-        c = 2
+        numberOfCuts = 2
         length = 18
         width = 40
-        p = "T"
+        placeMapPins = "T"
     elif s == "2":
         shapes = shapes2
         numberOfIslands = 15
-        c = 3
+        numberOfCuts = 3
         length = 36
         width = 100
-        p = "T"
+        placeMapPins = "T"
     elif s == "3":
         shapes = shapes2
         numberOfIslands = 50
-        c = 4
+        numberOfCuts = 4
         length = 48
         width = 191
-        p = "T"
+        placeMapPins = "T"
     else:
         for i in presets:
             print(i)
@@ -97,10 +97,10 @@ def Start(s):
             if presets[i]["Set"] == cmd:
                 shapes = presets[i]["shapes"]
                 numberOfIslands = presets[i]["numberOfIslands"]
-                c = presets[i]["c"]
+                numberOfCuts = presets[i]["numberOfCuts"]
                 length = presets[i]["length"]
                 width = presets[i]["width"]
-                p = presets[i]["p"]
+                placeMapPins = presets[i]["placeMapPins"]
     A = length*width
     MAP = {}
     for x in range(A):
@@ -182,11 +182,11 @@ def AddB():
 def Curve():
     global MAP
     global width
-    global c
+    global numberOfCuts
     global RS
     global LS
     t = 0
-    while t <= c:
+    while t <= numberOfCuts:
         t += 1
         for i in MAP:
             if MAP[i] == "#":
@@ -235,13 +235,13 @@ def Curve():
                 # - R
                 if Sides == 4:
                     MAP[i] = "~"
-                elif Sides == 1 and t <= c:
+                elif Sides == 1 and t <= numberOfCuts:
                     if random.randint(0, 50) == 1:
                         MAP[i] = "~"
-                elif Sides == 2 and t <= c:
+                elif Sides == 2 and t <= numberOfCuts:
                     if random.randint(0, 3) != 1:
                         MAP[i] = "~"
-                elif Sides == 3 and t <= c:
+                elif Sides == 3 and t <= numberOfCuts:
                     if random.randint(0, 5) != 1:
                         MAP[i] = "~"
                 else:
@@ -331,8 +331,8 @@ def AddStuff():
     global MAP
     global PIL
     global map_pins 
-    global p
-    if p == "T":
+    global placeMapPins
+    if placeMapPins == "T":
         for i in MAP:
             if MAP[i] == " ":
                 if random.randint(0, 25) == 1:
