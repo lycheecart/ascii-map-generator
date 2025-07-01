@@ -399,19 +399,22 @@ def LegendC():
     MAP[b*3 + 2] = "S"
         
 
-# Main loop
-while True:
-    print("Small(1), Medium(2), or Large(3)")
-    print("More(4)")
-    cmd = input(">")
-    Start(cmd)
-    for i in range(l):
-        AddB()
-    print("")
-    Curve()
-    Outline()
-    Clear()
-    AddStuff()
-    LegendC()
-    PrintM()
-    print("")
+def main():
+    while True:
+        print("Small(1), Medium(2), or Large(3)")
+        print("More(4)")
+        cmd = input(">")
+        Start(cmd)
+        for i in range(l):
+            AddB()
+        print("")
+        Curve()
+        Outline()
+        Clear()
+        AddStuff()
+        LegendC()
+        PrintM()
+        print("")
+
+if __name__ == "__main__":
+    main()
