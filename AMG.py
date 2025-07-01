@@ -40,13 +40,13 @@ shapes5 = {
 }
 
 presets = {
-    "1 - Pocket sized" : {"Set": 1, "a": 15, "b": 25, "shapes": shapes1, "c": 2, "l": 5, "p": "T"},
-    "2 - Long" : {"Set": 2, "a": 500, "b": 100, "shapes": shapes3, "c": 3, "l": 100, "p": "T"},
-    "3 - Mess" : {"Set": 3, "a": 36, "b": 100, "shapes": shapes0, "c": 0, "l": 1000, "p": "F"},
-    "4 - Box" : {"Set": 4, "a": 36, "b": 100, "shapes": shapes2, "c": 0, "l": 20, "p": "T"},
-    "5 - Islands" : {"Set": 5, "a": 25, "b": 75, "shapes": shapes4, "c": 0, "l": 25, "p": "T"},
-    "6 - Waterland" : {"Set": 6, "a": 20, "b": 50, "shapes": shapes0, "c": 1, "l": 1500, "p": "F"},
-    "7 - Blob" : {"Set": 7, "a": 36, "b": 100, "shapes": shapes5, "c": 20, "l": 3, "p": "F"},
+    "1 - Pocket sized" : {"Set": 1, "a": 15, "b": 25, "shapes": shapes1, "c": 2, "numberOfIslands": 5, "p": "T"},
+    "2 - Long" : {"Set": 2, "a": 500, "b": 100, "shapes": shapes3, "c": 3, "numberOfIslands": 100, "p": "T"},
+    "3 - Mess" : {"Set": 3, "a": 36, "b": 100, "shapes": shapes0, "c": 0, "numberOfIslands": 1000, "p": "F"},
+    "4 - Box" : {"Set": 4, "a": 36, "b": 100, "shapes": shapes2, "c": 0, "numberOfIslands": 20, "p": "T"},
+    "5 - Islands" : {"Set": 5, "a": 25, "b": 75, "shapes": shapes4, "c": 0, "numberOfIslands": 25, "p": "T"},
+    "6 - Waterland" : {"Set": 6, "a": 20, "b": 50, "shapes": shapes0, "c": 1, "numberOfIslands": 1500, "p": "F"},
+    "7 - Blob" : {"Set": 7, "a": 36, "b": 100, "shapes": shapes5, "c": 20, "numberOfIslands": 3, "p": "F"},
 }
 
 # Function that creates the basic map, defines stuff like size, legend, positions on left/right side, ect
@@ -57,7 +57,7 @@ def Start(s):
     global Legend 
     global shapes
     global presets
-    global l
+    global numberOfIslands
     global a
     global b
     global A
@@ -70,21 +70,21 @@ def Start(s):
     MAP = {}
     if s == "1":
         shapes = shapes1
-        l = 7
+        numberOfIslands = 7
         c = 2
         a = 18
         b = 40
         p = "T"
     elif s == "2":
         shapes = shapes2
-        l = 15
+        numberOfIslands = 15
         c = 3
         a = 36
         b = 100
         p = "T"
     elif s == "3":
         shapes = shapes2
-        l = 50
+        numberOfIslands = 50
         c = 4
         a = 48
         b = 191
@@ -96,7 +96,7 @@ def Start(s):
         for i in presets:
             if presets[i]["Set"] == cmd:
                 shapes = presets[i]["shapes"]
-                l = presets[i]["l"]
+                numberOfIslands = presets[i]["numberOfIslands"]
                 c = presets[i]["c"]
                 a = presets[i]["a"]
                 b = presets[i]["b"]
@@ -401,7 +401,7 @@ def main():
         print("More(4)")
         cmd = input(">")
         Start(cmd)
-        for i in range(l):
+        for i in range(numberOfIslands):
             AddB()
         print("")
         Curve()

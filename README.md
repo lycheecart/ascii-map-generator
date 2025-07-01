@@ -16,8 +16,6 @@ The variables are:
 
 	shapes: the average sizes of the islands used (shapes0 - 5)
 
-	l: number of islands added to the map (these can overlap)
-
 	c: number of times the cutter function will run (curves sharp edges)
 
 	a: length
