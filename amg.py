@@ -96,8 +96,8 @@ def Start(cmd):
         y += width
         RS.append(y)
 
-# Function that prints the map to the console
-def PrintM():
+# print the map 
+def display():
     global length
     global width
     global MAP
@@ -144,7 +144,7 @@ def AddB():
                 return None
 
 # Function that smooths out long corners
-def Curve():
+def carveEdges():
     global MAP
     global width
     global numberOfCuts
@@ -213,7 +213,7 @@ def Curve():
                     pass
 
 # Function that replaces the outline of the rectangles with ascii art
-def Outline():
+def outlineIslands():
     global MAP
     global width
     global LS
@@ -267,14 +267,14 @@ def Outline():
                 pass
 
 # Function that clears out overything but the sea and outline
-def Clear():
+def whitespaceLand():
     global MAP
     for i in MAP:
         if MAP[i] == "#":
             MAP[i] = " "
 
 # Function that adds random stuff to the empty parts of the map
-def AddStuff():
+def placePins():
     global MAP
     global PIL
     global map_pins 
@@ -345,12 +345,12 @@ def main():
         for i in range(numberOfIslands):
             AddB()
         print("")
-        Curve()
-        Outline()
-        Clear()
-        AddStuff()
+        carveEdges()
+        outlineIslands()
+        whitespaceLand()
+        placePins()
         createLegend()
-        PrintM()
+        display()
         print("")
 
 if __name__ == "__main__":
