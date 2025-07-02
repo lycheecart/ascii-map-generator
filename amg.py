@@ -5,41 +5,41 @@
 import random
 
 # - Lists of rectangles
-shapes0 = {
-    1:{"cols": 1, "rows": 1},
-    2:{"cols": 1, "rows": 2},
-    3:{"cols": 2, "rows": 1}
-}
+shapes0 = [
+    {"cols": 1, "rows": 1},
+    {"cols": 1, "rows": 2},
+    {"cols": 2, "rows": 1}
+]
 
-shapes1 = {
-    1:{"cols": 10, "rows": 10},
-    2:{"cols": 15, "rows": 8},
-    3:{"cols": 7, "rows": 3},
-    4:{"cols": 12, "rows": 5},
-    5:{"cols": 20, "rows": 2}
-}
+shapes1 = [
+    {"cols": 10, "rows": 10},
+    {"cols": 15, "rows": 8},
+    {"cols": 7, "rows": 3},
+    {"cols": 12, "rows": 5},
+    {"cols": 20, "rows": 2}
+]
 
-shapes2 = {
-    1:{"cols": 30, "rows": 5},
-    2:{"cols": 20, "rows": 6},
-    3:{"cols": 25, "rows": 5}
-}
+shapes2 = [
+    {"cols": 30, "rows": 5},
+    {"cols": 20, "rows": 6},
+    {"cols": 25, "rows": 5}
+]
 
-shapes3 = {
-    1:{"cols": 10, "rows": 50},
-    2:{"cols": 15, "rows": 75},
-    3:{"cols": 5, "rows": 100}
-}
+shapes3 = [
+    {"cols": 10, "rows": 50},
+    {"cols": 15, "rows": 75},
+    {"cols": 5, "rows": 100}
+]
 
-shapes4 = {
-    1:{"cols": 7, "rows": 2},
-    2:{"cols": 6, "rows": 3},
-    3:{"cols": 5, "rows": 4}
-}
+shapes4 = [
+    {"cols": 7, "rows": 2},
+    {"cols": 6, "rows": 3},
+    {"cols": 5, "rows": 4}
+]
 
-shapes5 = {
-    1:{"cols": 70, "rows": 30}
-}
+shapes5 = [
+    {"cols": 70, "rows": 30}
+]
 
 presets = {
     "1 - Small" : {"Set": '1', "length": 18, "width": 40, "shapes": shapes1, "numberOfCuts": 2, "numberOfIslands": 7, "placeMapPins": "T"},
@@ -106,33 +106,33 @@ def display():
             c += 1
         print(legend[i])
 
-# Function that checks if you can place a specified rectangle(Box) on a specified position(x)
+# Function that checks if you can place the currently selected rect on a specified position(x)
 def CPlaceB(x):
     global mapGlyphs
-    global Box
+    global shapeI
     global length
     global width
     y = int(x/width) + 1
     t = x - ((y - 1)*width)
-    return ((t + shapes[Box]["cols"]) <= width and (y + shapes[Box]["rows"]) <= length)
+    return ((t + shapes[shapeI]["cols"]) <= width and (y + shapes[shapeI]["rows"]) <= length)
 
 # Function that places Box on x
 def PlaceB(i):
-    global Box
+    global shapeI
     global width
     global mapGlyphs
-    for y in range(shapes[Box]["rows"]):
-        for x in range(shapes[Box]["cols"]):
+    for y in range(shapes[shapeI]["rows"]):
+        for x in range(shapes[shapeI]["cols"]):
             mapGlyphs[i] = "#"
             i +=1
-        i += (width - shapes[Box]["cols"])
+        i += (width - shapes[shapeI]["cols"])
 
 # Function that randomly picks a location/rectangle(box)
 def AddB():
-    global Box
+    global shapeI
     global length
     global width
-    Box = random.choice(list(shapes.keys()))
+    shapeI = random.randint(0,len(shapes)-1)
     while True:
             i = random.randint(-1,(length*width))
             if CPlaceB(i) == True:
