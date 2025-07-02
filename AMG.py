@@ -107,18 +107,14 @@ def Start(s):
         MAP[x] = "~"
     RS = [width]
     LS = [0]
-    i = 0
     y = 0
-    while i != length:
+    for i in range(length):
         y += width
         LS.append(y)
-        i += 1
-    i = 0
     y = 0
-    while i != length:
+    for i in range(length):
         y += width
         RS.append(y)
-        i += 1
 
 # Function that prints the map to the console
 def PrintM():
@@ -156,16 +152,11 @@ def PlaceB(i):
     global Box
     global width
     global MAP
-    y = 0
-    x = 0
-    while y != shapes[Box]["y"]:
-        while x != shapes[Box]["x"]:
+    for y in range(shapes[Box]["y"]):
+        for x in range(shapes[Box]["x"]):
             MAP[i] = "#"
             i +=1
-            x += 1
         i += (width - shapes[Box]["x"])
-        y += 1
-        x = 0
 
 # Function that randomly picks a location/rectangle(box)
 def AddB():
