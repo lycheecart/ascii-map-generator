@@ -65,7 +65,6 @@ def Start(cmd):
     global numberOfIslands
     global length
     global width
-    global A
     global numberOfCuts
     global LS 
     global RS
@@ -81,8 +80,7 @@ def Start(cmd):
             length = presets[i]["length"]
             width = presets[i]["width"]
             placeMapPins = presets[i]["placeMapPins"]
-    A = length*width
-    for x in range(A):
+    for x in range(length*width):
         mapGlyphs[x] = "~"
     RS = [width]
     LS = [0]
@@ -132,10 +130,11 @@ def PlaceB(i):
 # Function that randomly picks a location/rectangle(box)
 def AddB():
     global Box
-    global A
+    global length
+    global width
     Box = random.choice(list(shapes.keys()))
     while True:
-            i = random.randint(-1,(A))
+            i = random.randint(-1,(length*width))
             if CPlaceB(i) == True:
                 PlaceB(i)
                 return None
