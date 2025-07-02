@@ -155,62 +155,53 @@ def carveEdges():
         t += 1
         for i in MAP:
             if MAP[i] == "#":
-                Sides = 0
-                # - U
-                x = i - width
-                try:
-                    a = MAP[x]
+                sides = 0
+                try: #up
+                    glyph = MAP[i-width]
                 except:
-                    a = "~"
-                if a == "~":
-                    Sides += 1
-                # - U
-                # - D
-                x = i + width
-                try:
-                    a = MAP[x]
+                    glyph = "~"
+                if glyph == "~":
+                    sides += 1
+
+                try: #down
+                    glyph = MAP[i+width]
                 except:
-                    a = "~"
-                if a == "~":
-                    Sides += 1
-                # - D
-                # - L
-                if i in LS:
-                    Sides += 1
+                    glyph = "~"
+                if glyph == "~":
+                    sides += 1
+
+                if i in LS: #left
+                    sides += 1
                 else:
-                    x = i - 1
                     try:
-                        a = MAP[x]
+                        glyph = MAP[i-1]
                     except:
-                        a = "~"
-                    if a == "~":
-                        Sides += 1
-                # - L
-                # - R
-                if i in RS:
-                    Sides += 1
+                        glyph = "~"
+                    if glyph == "~":
+                        sides += 1
+
+                if i in RS: #right
+                    sides += 1
                 else:
-                    x = i + 1
                     try:
-                        a = MAP[x]
+                        glyph = MAP[i+1]
                     except:
-                        a = "~"
-                    if a == "~":
-                        Sides += 1
-                # - R
-                if Sides == 4:
+                        glyph = "~"
+                    if glyph == "~":
+                        sides += 1
+
+                cutChances = {
+                    0: 0.0,
+                    1: 0.0196078431372549,
+                    2: 0.75,
+                    3: 0.8333333333333334,
+                    4: 1.0
+                }
+
+                if sides == 4:
                     MAP[i] = "~"
-                elif Sides == 1 and t <= numberOfCuts:
-                    if random.randint(0, 50) == 1:
-                        MAP[i] = "~"
-                elif Sides == 2 and t <= numberOfCuts:
-                    if random.randint(0, 3) != 1:
-                        MAP[i] = "~"
-                elif Sides == 3 and t <= numberOfCuts:
-                    if random.randint(0, 5) != 1:
-                        MAP[i] = "~"
-                else:
-                    pass
+                elif random.random() < cutChances[sides]
+                    MAP[i] = "~"
 
 # Function that replaces the outline of the rectangles with ascii art
 def outlineIslands():
