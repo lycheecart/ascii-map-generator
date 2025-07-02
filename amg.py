@@ -226,66 +226,48 @@ def Outline():
     global RS
     for i in MAP:
         if MAP[i] == "#":
-            Sides = {"U": 0, "D": 0, "L": 0, "R": 0}
-            # - U
-            x = i - width
-            try:
-                a = MAP[x]
+            Sides = {"U": False, "D": False, "L": False, "R": False}
+            try: #up
+                glyph = MAP[i-width]
             except:
-                a = "~"
-            if a == "~":
-                Sides["U"] = 1
-            # - U
-            # - D
-            x = i + width
-            try:
-                a = MAP[x]
+                glyph = "~"
+            Sides["U"] = (glyph == "~")
+
+            try: #down
+                glyph = MAP[i+width]
             except:
-                a = "~"
-            if a == "~":
-                Sides["D"] = 1
-            # - D
-            # - L
-            if i in LS:
-                Sides["L"] = 1
-            else:
-                x = i - 1
-                try:
-                    a = MAP[x]
-                except:
-                    a = MAP[i]
-                if a == "~":
-                    Sides["L"] = 1
-            # - L
-            # - R
-            if i in RS:
-                Sides["R"] = 1
-            else:
-                x = i + 1
-                try:
-                    a = MAP[x]
-                except:
-                    a = MAP[i]
-                if a == "~":
-                    Sides["R"] = 1
-            # - R
-            if Sides["U"] == 1 and Sides["D"] == 1 and Sides["R"] == 1:
+                glyph = "~"
+            Sides["D"] = (glyph == "~")
+
+            try: #left
+                glyph = MAP[i-1]
+            except:
+                glyph = MAP[i] #'#'
+            Sides["L"] = (glyph == "~") or (i in LS)
+
+            try: #right
+                glyph = MAP[i+1]
+            except:
+                glyph = MAP[i] #'#'
+            Sides["R"] = (glyph == "~") or (i in RS)
+
+            if Sides["U"] and Sides["D"] and Sides["R"]:
                 MAP[i] = ">"  
-            elif Sides["U"] == 1 and Sides["D"] == 1 and Sides["L"] == 1:   
+            elif Sides["U"] and Sides["D"] and Sides["L"]:   
                 MAP[i] = "<"
-            elif Sides["U"] == 1 and Sides["R"] == 1 and Sides["L"] == 1:   
+            elif Sides["U"] and Sides["R"] and Sides["L"]:   
                 MAP[i] = "^"
-            elif Sides["R"] == 1 and Sides["D"] == 1 and Sides["L"] == 1:   
+            elif Sides["R"] and Sides["D"] and Sides["L"]:   
                 MAP[i] = "v"
-            elif (Sides["U"] == 1 and Sides["L"] == 1) or (Sides["D"] == 1 and Sides["R"] == 1):
+            elif (Sides["U"] and Sides["L"]) or (Sides["D"] and Sides["R"]):
                 MAP[i] = "/"
-            elif (Sides["U"] == 1 and Sides["R"] == 1) or (Sides["D"] == 1 and Sides["L"] == 1):
+            elif (Sides["U"] and Sides["R"]) or (Sides["D"] and Sides["L"]):
                 MAP[i] = u"\u005C"
-            elif Sides["U"] == 1:
+            elif Sides["U"]:
                 MAP[i] = u"\u203E"
-            elif Sides["D"] == 1:
+            elif Sides["D"]:
                 MAP[i] = "_"
-            elif Sides["L"] == 1 or Sides["R"] == 1:
+            elif Sides["L"] or Sides["R"]:
                 MAP[i] = "|"
             else:
                 pass
