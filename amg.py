@@ -42,17 +42,20 @@ shapes5 = {
 }
 
 presets = {
-    "1 - Pocket sized" : {"Set": 1, "length": 15, "width": 25, "shapes": shapes1, "numberOfCuts": 2, "numberOfIslands": 5, "placeMapPins": "T"},
-    "2 - Long" : {"Set": 2, "length": 500, "width": 100, "shapes": shapes3, "numberOfCuts": 3, "numberOfIslands": 100, "placeMapPins": "T"},
-    "3 - Mess" : {"Set": 3, "length": 36, "width": 100, "shapes": shapes0, "numberOfCuts": 0, "numberOfIslands": 1000, "placeMapPins": "F"},
-    "4 - Box" : {"Set": 4, "length": 36, "width": 100, "shapes": shapes2, "numberOfCuts": 0, "numberOfIslands": 20, "placeMapPins": "T"},
-    "5 - Islands" : {"Set": 5, "length": 25, "width": 75, "shapes": shapes4, "numberOfCuts": 0, "numberOfIslands": 25, "placeMapPins": "T"},
-    "6 - Waterland" : {"Set": 6, "length": 20, "width": 50, "shapes": shapes0, "numberOfCuts": 1, "numberOfIslands": 1500, "placeMapPins": "F"},
-    "7 - Blob" : {"Set": 7, "length": 36, "width": 100, "shapes": shapes5, "numberOfCuts": 20, "numberOfIslands": 3, "placeMapPins": "F"},
+    "1 - Small" : {"Set": '1', "length": 18, "width": 40, "shapes": shapes1, "numberOfCuts": 2, "numberOfIslands": 7, "placeMapPins": "T"},
+    "2 - Medium" : {"Set": '2', "length": 36, "width": 100, "shapes": shapes2, "numberOfCuts": 3, "numberOfIslands": 15, "placeMapPins": "T"},
+    "3 - Large" : {"Set": '3', "length": 48, "width": 191, "shapes": shapes2, "numberOfCuts": 4, "numberOfIslands": 50, "placeMapPins": "T"},
+    "4 - Pocket sized" : {"Set": '4', "length": 15, "width": 25, "shapes": shapes1, "numberOfCuts": 2, "numberOfIslands": 5, "placeMapPins": "T"},
+    "5 - Long" : {"Set": '5', "length": 500, "width": 100, "shapes": shapes3, "numberOfCuts": 3, "numberOfIslands": 100, "placeMapPins": "T"},
+    "6 - Mess" : {"Set": '6', "length": 36, "width": 100, "shapes": shapes0, "numberOfCuts": 0, "numberOfIslands": 1000, "placeMapPins": "F"},
+    "7 - Box" : {"Set": '7', "length": 36, "width": 100, "shapes": shapes2, "numberOfCuts": 0, "numberOfIslands": 20, "placeMapPins": "T"},
+    "8 - Islands" : {"Set": '8', "length": 25, "width": 75, "shapes": shapes4, "numberOfCuts": 0, "numberOfIslands": 25, "placeMapPins": "T"},
+    "9 - Waterland" : {"Set": '9', "length": 20, "width": 50, "shapes": shapes0, "numberOfCuts": 1, "numberOfIslands": 1500, "placeMapPins": "F"},
+    "0 - Blob" : {"Set": '0', "length": 36, "width": 100, "shapes": shapes5, "numberOfCuts": 20, "numberOfIslands": 3, "placeMapPins": "F"},
 }
 
 # Function that creates the basic map, defines stuff like size, legend, positions on left/right side, ect
-def Start(s):
+def Start(cmd):
     global MAP
     global map_pins 
     global PIL
@@ -70,39 +73,14 @@ def Start(s):
     map_pins = ["*", "@", "!", ".", "+", "%", "&", "$", "#"]
     PIL = []
     MAP = {}
-    if s == "1":
-        shapes = shapes1
-        numberOfIslands = 7
-        numberOfCuts = 2
-        length = 18
-        width = 40
-        placeMapPins = "T"
-    elif s == "2":
-        shapes = shapes2
-        numberOfIslands = 15
-        numberOfCuts = 3
-        length = 36
-        width = 100
-        placeMapPins = "T"
-    elif s == "3":
-        shapes = shapes2
-        numberOfIslands = 50
-        numberOfCuts = 4
-        length = 48
-        width = 191
-        placeMapPins = "T"
-    else:
-        for i in presets:
-            print(i)
-        cmd = int(input(">"))
-        for i in presets:
-            if presets[i]["Set"] == cmd:
-                shapes = presets[i]["shapes"]
-                numberOfIslands = presets[i]["numberOfIslands"]
-                numberOfCuts = presets[i]["numberOfCuts"]
-                length = presets[i]["length"]
-                width = presets[i]["width"]
-                placeMapPins = presets[i]["placeMapPins"]
+    for i in presets:
+        if presets[i]["Set"] == cmd:
+            shapes = presets[i]["shapes"]
+            numberOfIslands = presets[i]["numberOfIslands"]
+            numberOfCuts = presets[i]["numberOfCuts"]
+            length = presets[i]["length"]
+            width = presets[i]["width"]
+            placeMapPins = presets[i]["placeMapPins"]
     A = length*width
     MAP = {}
     for x in range(A):
@@ -384,8 +362,8 @@ def LegendC():
 
 def main():
     while True:
-        print("Small(1), Medium(2), or Large(3)")
-        print("More(4)")
+        for i in presets:
+            print(i)
         cmd = input(">")
         Start(cmd)
         for i in range(numberOfIslands):
