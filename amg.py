@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # - ascii map generator
 
 import random
