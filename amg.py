@@ -108,14 +108,11 @@ def PrintM():
     for i in range(length):
         for x in range(width):
             print(MAP[c], end = "")
-            x += 1
             c += 1
         try:
             print(Legend[i])
         except:
             print(" |                      |")
-        x = 1
-        i += 1
 
 # Function that checks if you can place a specified rectangle(Box) on a specified position(x)
 def CPlaceB(x):
