@@ -59,7 +59,7 @@ def Start(cmd):
     global MAP
     global map_pins 
     global PIL
-    global Legend 
+    global legend 
     global shapes
     global presets
     global numberOfIslands
@@ -101,7 +101,7 @@ def PrintM():
     global length
     global width
     global MAP
-    global Legend
+    global legend
     c = 0
     x = 0
     i = 0
@@ -109,10 +109,7 @@ def PrintM():
         for x in range(width):
             print(MAP[c], end = "")
             c += 1
-        try:
-            print(Legend[i])
-        except:
-            print(" |                      |")
+        print(legend[i])
 
 # Function that checks if you can place a specified rectangle(Box) on a specified position(x)
 def CPlaceB(x):
@@ -292,10 +289,9 @@ def AddStuff():
                     if MAP[i] in ["@", "&", "+", "%", "#"]:
                         map_pins.remove(MAP[i])
 
-# Function that creats the Legend
-def LegendC():
+def createLegend():
     global PIL
-    global Legend
+    global legend
     global MAP
     global width
     Name  = random.choice(["Str","Tra","Kle","Olc", "Mat", "Wir", "Sle", "Pad", "Lat"]) + \
@@ -322,16 +318,17 @@ def LegendC():
     "#": "Impom            |",
     "$": "Gold             |"
     }
-    Legend = {
-        0: " +----------------------+",
-        1: " |        " + Name + "        |",
-        2: " +----------------------+"
-    }
-    n = 4
+    legend = [
+        " +----------------------+",
+        " |        " + Name + "        |",
+        " +----------------------+",
+        " |                      |"
+    ]
     for i in PIL:
-        Legend[n] = " | " + i + " = " + Meaning[i]
-        n += 1
-    Legend[length - 1] = " +----------------------+"
+        legend.append(" | " + i + " = " + Meaning[i])
+    for i in range(len(legend), length-1):
+        legend.append(" |                      |")
+    legend.append(" +----------------------+")
     MAP[width + 2] = "N"
     MAP[width*2 + 1] = "W"
     MAP[width*2 + 2] = "+"
@@ -352,7 +349,7 @@ def main():
         Outline()
         Clear()
         AddStuff()
-        LegendC()
+        createLegend()
         PrintM()
         print("")
 
