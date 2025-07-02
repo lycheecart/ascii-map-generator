@@ -56,7 +56,7 @@ presets = {
 
 # Function that creates the basic map, defines stuff like size, legend, positions on left/right side, ect
 def Start(cmd):
-    global MAP
+    global mapGlyphs
     global map_pins 
     global PIL
     global legend 
@@ -72,7 +72,7 @@ def Start(cmd):
     global placeMapPins
     map_pins = ["*", "@", "!", ".", "+", "%", "&", "$", "#"]
     PIL = []
-    MAP = {}
+    mapGlyphs = {}
     for i in presets:
         if presets[i]["Set"] == cmd:
             shapes = presets[i]["shapes"]
@@ -82,9 +82,8 @@ def Start(cmd):
             width = presets[i]["width"]
             placeMapPins = presets[i]["placeMapPins"]
     A = length*width
-    MAP = {}
     for x in range(A):
-        MAP[x] = "~"
+        mapGlyphs[x] = "~"
     RS = [width]
     LS = [0]
     y = 0
@@ -100,20 +99,18 @@ def Start(cmd):
 def display():
     global length
     global width
-    global MAP
+    global mapGlyphs
     global legend
     c = 0
-    x = 0
-    i = 0
     for i in range(length):
         for x in range(width):
-            print(MAP[c], end = "")
+            print(mapGlyphs[c], end = "")
             c += 1
         print(legend[i])
 
 # Function that checks if you can place a specified rectangle(Box) on a specified position(x)
 def CPlaceB(x):
-    global MAP
+    global mapGlyphs
     global Box
     global length
     global width
@@ -125,10 +122,10 @@ def CPlaceB(x):
 def PlaceB(i):
     global Box
     global width
-    global MAP
+    global mapGlyphs
     for y in range(shapes[Box]["y"]):
         for x in range(shapes[Box]["x"]):
-            MAP[i] = "#"
+            mapGlyphs[i] = "#"
             i +=1
         i += (width - shapes[Box]["x"])
 
@@ -145,7 +142,7 @@ def AddB():
 
 # Function that smooths out long corners
 def carveEdges():
-    global MAP
+    global mapGlyphs
     global width
     global numberOfCuts
     global RS
@@ -153,18 +150,18 @@ def carveEdges():
     t = 0
     while t <= numberOfCuts:
         t += 1
-        for i in MAP:
-            if MAP[i] == "#":
+        for i in mapGlyphs:
+            if mapGlyphs[i] == "#":
                 sides = 0
                 try: #up
-                    glyph = MAP[i-width]
+                    glyph = mapGlyphs[i-width]
                 except:
                     glyph = "~"
                 if glyph == "~":
                     sides += 1
 
                 try: #down
-                    glyph = MAP[i+width]
+                    glyph = mapGlyphs[i+width]
                 except:
                     glyph = "~"
                 if glyph == "~":
@@ -174,7 +171,7 @@ def carveEdges():
                     sides += 1
                 else:
                     try:
-                        glyph = MAP[i-1]
+                        glyph = mapGlyphs[i-1]
                     except:
                         glyph = "~"
                     if glyph == "~":
@@ -184,7 +181,7 @@ def carveEdges():
                     sides += 1
                 else:
                     try:
-                        glyph = MAP[i+1]
+                        glyph = mapGlyphs[i+1]
                     except:
                         glyph = "~"
                     if glyph == "~":
@@ -199,91 +196,91 @@ def carveEdges():
                 }
 
                 if sides == 4:
-                    MAP[i] = "~"
-                elif random.random() < cutChances[sides]
-                    MAP[i] = "~"
+                    mapGlyphs[i] = "~"
+                elif random.random() < cutChances[sides]:
+                    mapGlyphs[i] = "~"
 
 # Function that replaces the outline of the rectangles with ascii art
 def outlineIslands():
-    global MAP
+    global mapGlyphs
     global width
     global LS
     global RS
-    for i in MAP:
-        if MAP[i] == "#":
+    for i in mapGlyphs:
+        if mapGlyphs[i] == "#":
             Sides = {"U": False, "D": False, "L": False, "R": False}
             try: #up
-                glyph = MAP[i-width]
+                glyph = mapGlyphs[i-width]
             except:
                 glyph = "~"
             Sides["U"] = (glyph == "~")
 
             try: #down
-                glyph = MAP[i+width]
+                glyph = mapGlyphs[i+width]
             except:
                 glyph = "~"
             Sides["D"] = (glyph == "~")
 
             try: #left
-                glyph = MAP[i-1]
+                glyph = mapGlyphs[i-1]
             except:
-                glyph = MAP[i] #'#'
+                glyph = mapGlyphs[i] #'#'
             Sides["L"] = (glyph == "~") or (i in LS)
 
             try: #right
-                glyph = MAP[i+1]
+                glyph = mapGlyphs[i+1]
             except:
-                glyph = MAP[i] #'#'
+                glyph = mapGlyphs[i] #'#'
             Sides["R"] = (glyph == "~") or (i in RS)
 
             if Sides["U"] and Sides["D"] and Sides["R"]:
-                MAP[i] = ">"  
+                mapGlyphs[i] = ">"  
             elif Sides["U"] and Sides["D"] and Sides["L"]:   
-                MAP[i] = "<"
+                mapGlyphs[i] = "<"
             elif Sides["U"] and Sides["R"] and Sides["L"]:   
-                MAP[i] = "^"
+                mapGlyphs[i] = "^"
             elif Sides["R"] and Sides["D"] and Sides["L"]:   
-                MAP[i] = "v"
+                mapGlyphs[i] = "v"
             elif (Sides["U"] and Sides["L"]) or (Sides["D"] and Sides["R"]):
-                MAP[i] = "/"
+                mapGlyphs[i] = "/"
             elif (Sides["U"] and Sides["R"]) or (Sides["D"] and Sides["L"]):
-                MAP[i] = u"\u005C"
+                mapGlyphs[i] = u"\u005C"
             elif Sides["U"]:
-                MAP[i] = u"\u203E"
+                mapGlyphs[i] = u"\u203E"
             elif Sides["D"]:
-                MAP[i] = "_"
+                mapGlyphs[i] = "_"
             elif Sides["L"] or Sides["R"]:
-                MAP[i] = "|"
+                mapGlyphs[i] = "|"
             else:
                 pass
 
 # Function that clears out overything but the sea and outline
 def whitespaceLand():
-    global MAP
-    for i in MAP:
-        if MAP[i] == "#":
-            MAP[i] = " "
+    global mapGlyphs
+    for i in mapGlyphs:
+        if mapGlyphs[i] == "#":
+            mapGlyphs[i] = " "
 
 # Function that adds random stuff to the empty parts of the map
 def placePins():
-    global MAP
+    global mapGlyphs
     global PIL
     global map_pins 
     global placeMapPins
     if placeMapPins == "T":
-        for i in MAP:
-            if MAP[i] == " ":
+        for i in mapGlyphs:
+            if mapGlyphs[i] == " ":
                 if random.randint(0, 25) == 1:
-                    MAP[i] = random.choice(map_pins)
-                    if MAP[i] not in PIL:
-                        PIL.append(MAP[i])
-                    if MAP[i] in ["@", "&", "+", "%", "#"]:
-                        map_pins.remove(MAP[i])
+                    mapGlyphs[i] = random.choice(map_pins)
+                    if mapGlyphs[i] not in PIL:
+                        PIL.append(mapGlyphs[i])
+                    if mapGlyphs[i] in ["@", "&", "+", "%", "#"]:
+                        map_pins.remove(mapGlyphs[i])
 
 def createLegend():
     global PIL
     global legend
-    global MAP
+    global mapGlyphs
     global width
     Name  = random.choice(["Str","Tra","Kle","Olc", "Mat", "Wir", "Sle", "Pad", "Lat"]) + \
             random.choice(["ait","cre","zat","tor", "lin", "dly", "waz", "ken", "mon"])
@@ -320,11 +317,11 @@ def createLegend():
     for i in range(len(legend), length-1):
         legend.append(" |                      |")
     legend.append(" +----------------------+")
-    MAP[width + 2] = "N"
-    MAP[width*2 + 1] = "W"
-    MAP[width*2 + 2] = "+"
-    MAP[width*2 + 3] = "E"
-    MAP[width*3 + 2] = "S"
+    mapGlyphs[width + 2] = "N"
+    mapGlyphs[width*2 + 1] = "W"
+    mapGlyphs[width*2 + 2] = "+"
+    mapGlyphs[width*2 + 3] = "E"
+    mapGlyphs[width*3 + 2] = "S"
         
 
 def main():
