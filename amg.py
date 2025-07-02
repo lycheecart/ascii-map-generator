@@ -58,7 +58,7 @@ presets = {
 def Start(cmd):
     global mapGlyphs
     global map_pins 
-    global PIL
+    global pinsInLegend
     global legend 
     global shapes
     global presets
@@ -70,7 +70,7 @@ def Start(cmd):
     global RS
     global placeMapPins
     map_pins = ["*", "@", "!", ".", "+", "%", "&", "$", "#"]
-    PIL = []
+    pinsInLegend = []
     mapGlyphs = {}
     for i in presets:
         if presets[i]["Set"] == cmd:
@@ -263,7 +263,7 @@ def whitespaceLand():
 # Function that adds random stuff to the empty parts of the map
 def placePins():
     global mapGlyphs
-    global PIL
+    global pinsInLegend
     global map_pins 
     global placeMapPins
     if placeMapPins == "T":
@@ -271,13 +271,13 @@ def placePins():
             if mapGlyphs[i] == " ":
                 if random.randint(0, 25) == 1:
                     mapGlyphs[i] = random.choice(map_pins)
-                    if mapGlyphs[i] not in PIL:
-                        PIL.append(mapGlyphs[i])
+                    if mapGlyphs[i] not in pinsInLegend:
+                        pinsInLegend.append(mapGlyphs[i])
                     if mapGlyphs[i] in ["@", "&", "+", "%", "#"]:
                         map_pins.remove(mapGlyphs[i])
 
 def createLegend():
-    global PIL
+    global pinsInLegend
     global legend
     global mapGlyphs
     global width
@@ -311,8 +311,8 @@ def createLegend():
         " +----------------------+",
         " |                      |"
     ]
-    for i in PIL:
-        legend.append(" | " + i + " = " + Meaning[i])
+    for p in pinsInLegend:
+        legend.append(" | " + p + " = " + Meaning[p])
     for i in range(len(legend), length-1):
         legend.append(" |                      |")
     legend.append(" +----------------------+")
