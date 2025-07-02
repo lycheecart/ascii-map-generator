@@ -6,39 +6,39 @@ import random
 
 # - Lists of rectangles
 shapes0 = {
-    1:{"x": 1, "y": 1},
-    2:{"x": 1, "y": 2},
-    3:{"x": 2, "y": 1}
+    1:{"cols": 1, "rows": 1},
+    2:{"cols": 1, "rows": 2},
+    3:{"cols": 2, "rows": 1}
 }
 
 shapes1 = {
-    1:{"x": 10, "y": 10},
-    2:{"x": 15, "y": 8},
-    3:{"x": 7, "y": 3},
-    4:{"x": 12, "y": 5},
-    5:{"x": 20, "y": 2}
+    1:{"cols": 10, "rows": 10},
+    2:{"cols": 15, "rows": 8},
+    3:{"cols": 7, "rows": 3},
+    4:{"cols": 12, "rows": 5},
+    5:{"cols": 20, "rows": 2}
 }
 
 shapes2 = {
-    1:{"x": 30, "y": 5},
-    2:{"x": 20, "y": 6},
-    3:{"x": 25, "y": 5}
+    1:{"cols": 30, "rows": 5},
+    2:{"cols": 20, "rows": 6},
+    3:{"cols": 25, "rows": 5}
 }
 
 shapes3 = {
-    1:{"x": 10, "y": 50},
-    2:{"x": 15, "y": 75},
-    3:{"x": 5, "y": 100}
+    1:{"cols": 10, "rows": 50},
+    2:{"cols": 15, "rows": 75},
+    3:{"cols": 5, "rows": 100}
 }
 
 shapes4 = {
-    1:{"x": 7, "y": 2},
-    2:{"x": 6, "y": 3},
-    3:{"x": 5, "y": 4}
+    1:{"cols": 7, "rows": 2},
+    2:{"cols": 6, "rows": 3},
+    3:{"cols": 5, "rows": 4}
 }
 
 shapes5 = {
-    1:{"x": 70, "y": 30}
+    1:{"cols": 70, "rows": 30}
 }
 
 presets = {
@@ -114,18 +114,18 @@ def CPlaceB(x):
     global width
     y = int(x/width) + 1
     t = x - ((y - 1)*width)
-    return ((t + shapes[Box]["x"]) <= width and (y + shapes[Box]["y"]) <= length)
+    return ((t + shapes[Box]["cols"]) <= width and (y + shapes[Box]["rows"]) <= length)
 
 # Function that places Box on x
 def PlaceB(i):
     global Box
     global width
     global mapGlyphs
-    for y in range(shapes[Box]["y"]):
-        for x in range(shapes[Box]["x"]):
+    for y in range(shapes[Box]["rows"]):
+        for x in range(shapes[Box]["cols"]):
             mapGlyphs[i] = "#"
             i +=1
-        i += (width - shapes[Box]["x"])
+        i += (width - shapes[Box]["cols"])
 
 # Function that randomly picks a location/rectangle(box)
 def AddB():
