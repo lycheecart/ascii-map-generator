@@ -58,290 +58,238 @@ presets = {
     "0 - Blob" : {"Set": '0', "length": 36, "width": 100, "shapes": shapes5, "numberOfCuts": 20, "numberOfIslands": 3, "placeMapPins": "F"},
 }
 
-# Function that creates the basic map, defines stuff like size, legend, positions on left/right side, ect
-def configureFromInput(cmd):
-    global mapGlyphs
-    global map_pins 
-    global pinsInLegend
-    global legend 
-    global shapes
-    global presets
-    global numberOfIslands
-    global length
-    global width
-    global numberOfCuts
-    global LS 
-    global RS
-    global placeMapPins
-    map_pins = ["*", "@", "!", ".", "+", "%", "&", "$", "#"]
-    pinsInLegend = []
-    mapGlyphs = {}
-    for i in presets:
-        if presets[i]["Set"] == cmd:
-            shapes = presets[i]["shapes"]
-            numberOfIslands = presets[i]["numberOfIslands"]
-            numberOfCuts = presets[i]["numberOfCuts"]
-            length = presets[i]["length"]
-            width = presets[i]["width"]
-            placeMapPins = presets[i]["placeMapPins"]
-    for x in range(length*width):
-        mapGlyphs[x] = "~"
-    RS = [width]
-    LS = [0]
-    y = 0
-    for i in range(length):
-        y += width
-        LS.append(y)
-    y = 0
-    for i in range(length):
-        y += width
-        RS.append(y)
+class Mapper:
+    def configureFromInput(self, cmd):
+        self.map_pins = ["*", "@", "!", ".", "+", "%", "&", "$", "#"]
+        self.pinsInLegend = []
+        self.mapGlyphs = {}
+        for i in presets:
+            if presets[i]["Set"] == cmd:
+                self.shapes = presets[i]["shapes"]
+                self.numberOfIslands = presets[i]["numberOfIslands"]
+                self.numberOfCuts = presets[i]["numberOfCuts"]
+                self.length = presets[i]["length"]
+                self.width = presets[i]["width"]
+                self.placeMapPins = presets[i]["placeMapPins"]
+        for x in range(self.length * self.width):
+            self.mapGlyphs[x] = "~"
+        self.LS = [0]
+        self.RS = [self.width]
+        y = 0
+        for i in range(self.length):
+            y += self.width
+            self.LS.append(y)
+        y = 0
+        for i in range(self.length):
+            y += self.width
+            self.RS.append(y)
 
-# print the map 
-def display():
-    global length
-    global width
-    global mapGlyphs
-    global legend
-    c = 0
-    for i in range(length):
-        for x in range(width):
-            print(mapGlyphs[c], end = "")
-            c += 1
-        print(legend[i])
+    def display(self):
+        c = 0
+        for i in range(self.length):
+            for x in range(self.width):
+                print(self.mapGlyphs[c], end = "")
+                c += 1
+            print(self.legend[i])
 
-# Function that checks if you can place the currently selected rect on a specified position(x)
-def checkIslandBounds(x):
-    global mapGlyphs
-    global shapeI
-    global length
-    global width
-    y = int(x/width) + 1
-    t = x - ((y - 1)*width)
-    return ((t + shapes[shapeI].cols <= width and (y + shapes[shapeI].rows <= length)))
+    def checkIslandBounds(self, x):
+        y = int(x/self.width) + 1
+        t = x - ((y - 1)*self.width)
+        selectedShape = self.shapes[self.shapeI]
+        return ((t + selectedShape.cols <= self.width and (y + selectedShape.rows <= self.length)))
 
-# Function that places Box on x
-def placeIsland(i):
-    global shapeI
-    global width
-    global mapGlyphs
-    for y in range(shapes[shapeI].rows):
-        for x in range(shapes[shapeI].cols):
-            mapGlyphs[i] = "#"
-            i +=1
-        i += (width - shapes[shapeI].cols)
+    def placeIsland(self,i):
+        selectedShape = self.shapes[self.shapeI]
+        for y in range(selectedShape.rows):
+            for x in range(selectedShape.cols):
+                self.mapGlyphs[i] = "#"
+                i +=1
+            i += (self.width - selectedShape.cols)
 
-# Function that randomly picks a location/rectangle(box)
-def addIsland():
-    global shapeI
-    global length
-    global width
-    shapeI = random.randint(0,len(shapes)-1)
-    while True:
-            i = random.randint(-1,(length*width))
-            if checkIslandBounds(i) == True:
-                placeIsland(i)
-                return None
+    def addIsland(self):
+        self.shapeI = random.randint(0,len(self.shapes)-1)
+        while True:
+                i = random.randint(-1, (self.length * self.width))
+                if self.checkIslandBounds(i) == True:
+                    self.placeIsland(i)
+                    return None
 
-# Function that smooths out long corners
-def carveEdges():
-    global mapGlyphs
-    global width
-    global numberOfCuts
-    global RS
-    global LS
-    t = 0
-    while t <= numberOfCuts:
-        t += 1
-        for i in mapGlyphs:
-            if mapGlyphs[i] == "#":
-                sides = 0
+    def carveEdges(self):
+        t = 0
+        while t <= self.numberOfCuts:
+            t += 1
+            for i in self.mapGlyphs:
+                if self.mapGlyphs[i] == "#":
+                    sides = 0
+                    try: #up
+                        glyph = self.mapGlyphs[i-self.width]
+                    except:
+                        glyph = "~"
+                    if glyph == "~":
+                        sides += 1
+
+                    try: #down
+                        glyph = self.mapGlyphs[i+self.width]
+                    except:
+                        glyph = "~"
+                    if glyph == "~":
+                        sides += 1
+
+                    if i in self.LS: #left
+                        sides += 1
+                    else:
+                        try:
+                            glyph = self.mapGlyphs[i-1]
+                        except:
+                            glyph = "~"
+                        if glyph == "~":
+                            sides += 1
+
+                    if i in self.RS: #right
+                        sides += 1
+                    else:
+                        try:
+                            glyph = self.mapGlyphs[i+1]
+                        except:
+                            glyph = "~"
+                        if glyph == "~":
+                            sides += 1
+
+                    cutChances = {
+                        0: 0.0,
+                        1: 0.0196078431372549,
+                        2: 0.75,
+                        3: 0.8333333333333334,
+                        4: 1.0
+                    }
+
+                    if sides == 4:
+                        self.mapGlyphs[i] = "~"
+                    elif random.random() < cutChances[sides]:
+                        self.mapGlyphs[i] = "~"
+
+    def outlineIslands(self):
+        for i in self.mapGlyphs:
+            if self.mapGlyphs[i] == "#":
+                sides = {"U": False, "D": False, "L": False, "R": False}
                 try: #up
-                    glyph = mapGlyphs[i-width]
+                    glyph = self.mapGlyphs[i-self.width]
                 except:
                     glyph = "~"
-                if glyph == "~":
-                    sides += 1
+                sides["U"] = (glyph == "~")
 
                 try: #down
-                    glyph = mapGlyphs[i+width]
+                    glyph = self.mapGlyphs[i+self.width]
                 except:
                     glyph = "~"
-                if glyph == "~":
-                    sides += 1
+                sides["D"] = (glyph == "~")
 
-                if i in LS: #left
-                    sides += 1
-                else:
-                    try:
-                        glyph = mapGlyphs[i-1]
-                    except:
-                        glyph = "~"
-                    if glyph == "~":
-                        sides += 1
+                try: #left
+                    glyph = self.mapGlyphs[i-1]
+                except:
+                    glyph = self.mapGlyphs[i] #'#'
+                sides["L"] = (glyph == "~") or (i in self.LS)
 
-                if i in RS: #right
-                    sides += 1
-                else:
-                    try:
-                        glyph = mapGlyphs[i+1]
-                    except:
-                        glyph = "~"
-                    if glyph == "~":
-                        sides += 1
+                try: #right
+                    glyph = self.mapGlyphs[i+1]
+                except:
+                    glyph = self.mapGlyphs[i] #'#'
+                sides["R"] = (glyph == "~") or (i in self.RS)
 
-                cutChances = {
-                    0: 0.0,
-                    1: 0.0196078431372549,
-                    2: 0.75,
-                    3: 0.8333333333333334,
-                    4: 1.0
-                }
+                if sides["U"] and sides["D"] and sides["R"]:
+                    self.mapGlyphs[i] = ">"  
+                elif sides["U"] and sides["D"] and sides["L"]:   
+                    self.mapGlyphs[i] = "<"
+                elif sides["U"] and sides["R"] and sides["L"]:   
+                    self.mapGlyphs[i] = "^"
+                elif sides["R"] and sides["D"] and sides["L"]:   
+                    self.mapGlyphs[i] = "v"
+                elif (sides["U"] and sides["L"]) or (sides["D"] and sides["R"]):
+                    self.mapGlyphs[i] = "/"
+                elif (sides["U"] and sides["R"]) or (sides["D"] and sides["L"]):
+                    self.mapGlyphs[i] = u"\u005C"
+                elif sides["U"]:
+                    self.mapGlyphs[i] = u"\u203E"
+                elif sides["D"]:
+                    self.mapGlyphs[i] = "_"
+                elif sides["L"] or sides["R"]:
+                    self.mapGlyphs[i] = "|"
 
-                if sides == 4:
-                    mapGlyphs[i] = "~"
-                elif random.random() < cutChances[sides]:
-                    mapGlyphs[i] = "~"
+    def whitespaceLand(self):
+        for i in self.mapGlyphs:
+            if self.mapGlyphs[i] == "#":
+                self.mapGlyphs[i] = " "
 
-# Function that replaces the outline of the rectangles with ascii art
-def outlineIslands():
-    global mapGlyphs
-    global width
-    global LS
-    global RS
-    for i in mapGlyphs:
-        if mapGlyphs[i] == "#":
-            Sides = {"U": False, "D": False, "L": False, "R": False}
-            try: #up
-                glyph = mapGlyphs[i-width]
-            except:
-                glyph = "~"
-            Sides["U"] = (glyph == "~")
+    def placePins(self): #places 'random stuff' to empty land tiles
+        if self.placeMapPins != "T":
+            return
+        for i in self.mapGlyphs:
+            if self.mapGlyphs[i] == " " and random.randint(0,25) == 1:
+                self.mapGlyphs[i] = random.choice(self.map_pins)
+                if self.mapGlyphs[i] not in self.pinsInLegend:
+                    self.pinsInLegend.append(self.mapGlyphs[i])
+                if self.mapGlyphs[i] in ["@", "&", "+", "%", "#"]:
+                    self.map_pins.remove(self.mapGlyphs[i])
 
-            try: #down
-                glyph = mapGlyphs[i+width]
-            except:
-                glyph = "~"
-            Sides["D"] = (glyph == "~")
-
-            try: #left
-                glyph = mapGlyphs[i-1]
-            except:
-                glyph = mapGlyphs[i] #'#'
-            Sides["L"] = (glyph == "~") or (i in LS)
-
-            try: #right
-                glyph = mapGlyphs[i+1]
-            except:
-                glyph = mapGlyphs[i] #'#'
-            Sides["R"] = (glyph == "~") or (i in RS)
-
-            if Sides["U"] and Sides["D"] and Sides["R"]:
-                mapGlyphs[i] = ">"  
-            elif Sides["U"] and Sides["D"] and Sides["L"]:   
-                mapGlyphs[i] = "<"
-            elif Sides["U"] and Sides["R"] and Sides["L"]:   
-                mapGlyphs[i] = "^"
-            elif Sides["R"] and Sides["D"] and Sides["L"]:   
-                mapGlyphs[i] = "v"
-            elif (Sides["U"] and Sides["L"]) or (Sides["D"] and Sides["R"]):
-                mapGlyphs[i] = "/"
-            elif (Sides["U"] and Sides["R"]) or (Sides["D"] and Sides["L"]):
-                mapGlyphs[i] = u"\u005C"
-            elif Sides["U"]:
-                mapGlyphs[i] = u"\u203E"
-            elif Sides["D"]:
-                mapGlyphs[i] = "_"
-            elif Sides["L"] or Sides["R"]:
-                mapGlyphs[i] = "|"
-            else:
-                pass
-
-# Function that clears out overything but the sea and outline
-def whitespaceLand():
-    global mapGlyphs
-    for i in mapGlyphs:
-        if mapGlyphs[i] == "#":
-            mapGlyphs[i] = " "
-
-# Function that adds random stuff to the empty parts of the map
-def placePins():
-    global mapGlyphs
-    global pinsInLegend
-    global map_pins 
-    global placeMapPins
-    if placeMapPins == "T":
-        for i in mapGlyphs:
-            if mapGlyphs[i] == " ":
-                if random.randint(0, 25) == 1:
-                    mapGlyphs[i] = random.choice(map_pins)
-                    if mapGlyphs[i] not in pinsInLegend:
-                        pinsInLegend.append(mapGlyphs[i])
-                    if mapGlyphs[i] in ["@", "&", "+", "%", "#"]:
-                        map_pins.remove(mapGlyphs[i])
-
-def createLegend():
-    global pinsInLegend
-    global legend
-    global mapGlyphs
-    global width
-    Name  = random.choice(["Str","Tra","Kle","Olc", "Mat", "Wir", "Sle", "Pad", "Lat"]) + \
-            random.choice(["ait","cre","zat","tor", "lin", "dly", "waz", "ken", "mon"])
-    Hname = random.choice(["Mikker","Wimmly","Jarmit", "FiFyFo", "Peeter", "Nipnoe", "Padfot", "??????"]) + \
-            " the " + \
-            random.choice(["Bold  |","Stong |","Fast  |","Large |", "Small |", "Fat   |", "Stuped|", "Smart |", "Fine  |"])
-    Dname = random.choice(["Scar             |", \
-                           "Kainto           |", \
-                           "Flea             |", \
-                           "Botron           |", \
-                           "Frot             |", \
-                           "Clotenomen       |", \
-                           "Fimotrin         |", \
-                           "Death            |"])
-    Meaning = {
-    "*": "Lake             |",
-    "@": Hname,
-    "!": "Battle           |",
-    ".": "Mountain         |",
-    "+": "Mintar           |",
-    "%": "Thraf            |",
-    "&": Dname,
-    "#": "Impom            |",
-    "$": "Gold             |"
-    }
-    legend = [
-        " +----------------------+",
-        " |        " + Name + "        |",
-        " +----------------------+",
-        " |                      |"
-    ]
-    for p in pinsInLegend:
-        legend.append(" | " + p + " = " + Meaning[p])
-    for i in range(len(legend), length-1):
-        legend.append(" |                      |")
-    legend.append(" +----------------------+")
-    mapGlyphs[width + 2] = "N"
-    mapGlyphs[width*2 + 1] = "W"
-    mapGlyphs[width*2 + 2] = "+"
-    mapGlyphs[width*2 + 3] = "E"
-    mapGlyphs[width*3 + 2] = "S"
-        
+    def createLegend(self):
+        Name  = random.choice(["Str","Tra","Kle","Olc", "Mat", "Wir", "Sle", "Pad", "Lat"]) + \
+                random.choice(["ait","cre","zat","tor", "lin", "dly", "waz", "ken", "mon"])
+        Hname = random.choice(["Mikker","Wimmly","Jarmit", "FiFyFo", "Peeter", "Nipnoe", "Padfot", "??????"]) + \
+                " the " + \
+                random.choice(["Bold  |","Stong |","Fast  |","Large |", "Small |", "Fat   |", "Stuped|", "Smart |", "Fine  |"])
+        Dname = random.choice(["Scar             |", \
+                               "Kainto           |", \
+                               "Flea             |", \
+                               "Botron           |", \
+                               "Frot             |", \
+                               "Clotenomen       |", \
+                               "Fimotrin         |", \
+                               "Death            |"])
+        Meaning = {
+        "*": "Lake             |",
+        "@": Hname,
+        "!": "Battle           |",
+        ".": "Mountain         |",
+        "+": "Mintar           |",
+        "%": "Thraf            |",
+        "&": Dname,
+        "#": "Impom            |",
+        "$": "Gold             |"
+        }
+        self.legend = [
+            " +----------------------+",
+            " |        " + Name + "        |",
+            " +----------------------+",
+            " |                      |"
+        ]
+        for p in self.pinsInLegend:
+            self.legend.append(" | " + p + " = " + Meaning[p])
+        for i in range(len(self.legend), self.length-1):
+            self.legend.append(" |                      |")
+        self.legend.append(" +----------------------+")
+        self.mapGlyphs[self.width + 2] = "N"
+        self.mapGlyphs[self.width*2 + 1] = "W"
+        self.mapGlyphs[self.width*2 + 2] = "+"
+        self.mapGlyphs[self.width*2 + 3] = "E"
+        self.mapGlyphs[self.width*3 + 2] = "S"
+            
 
 def main():
+    mapper = Mapper()
     while True:
         for i in presets:
             print(i)
         cmd = input(">")
-        configureFromInput(cmd)
-        for i in range(numberOfIslands):
-            addIsland()
+        mapper.configureFromInput(cmd)
+        for i in range(mapper.numberOfIslands):
+            mapper.addIsland()
         print("")
-        carveEdges()
-        outlineIslands()
-        whitespaceLand()
-        placePins()
-        createLegend()
-        display()
+        mapper.carveEdges()
+        mapper.outlineIslands()
+        mapper.whitespaceLand()
+        mapper.placePins()
+        mapper.createLegend()
+        mapper.display()
         print("")
 
 if __name__ == "__main__":
