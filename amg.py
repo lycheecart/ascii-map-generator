@@ -107,7 +107,7 @@ def display():
         print(legend[i])
 
 # Function that checks if you can place the currently selected rect on a specified position(x)
-def CPlaceB(x):
+def checkIslandBounds(x):
     global mapGlyphs
     global shapeI
     global length
@@ -117,7 +117,7 @@ def CPlaceB(x):
     return ((t + shapes[shapeI]["cols"]) <= width and (y + shapes[shapeI]["rows"]) <= length)
 
 # Function that places Box on x
-def PlaceB(i):
+def placeIsland(i):
     global shapeI
     global width
     global mapGlyphs
@@ -128,15 +128,15 @@ def PlaceB(i):
         i += (width - shapes[shapeI]["cols"])
 
 # Function that randomly picks a location/rectangle(box)
-def AddB():
+def addIsland():
     global shapeI
     global length
     global width
     shapeI = random.randint(0,len(shapes)-1)
     while True:
             i = random.randint(-1,(length*width))
-            if CPlaceB(i) == True:
-                PlaceB(i)
+            if checkIslandBounds(i) == True:
+                placeIsland(i)
                 return None
 
 # Function that smooths out long corners
@@ -330,7 +330,7 @@ def main():
         cmd = input(">")
         Start(cmd)
         for i in range(numberOfIslands):
-            AddB()
+            addIsland()
         print("")
         carveEdges()
         outlineIslands()
