@@ -9,68 +9,117 @@ class Rect:
         self.rows = rows 
         self.cols = cols
 
-shapes0 = [
-    Rect(rows=1, cols=1),
-    Rect(rows=2, cols=1),
-    Rect(rows=1, cols=2)
-]
+class Config:
+    def __init__(self, selectIndicator=None, selectKey=None,length=0,width=0,shapes=[],numberOfCuts=0,numberOfIslands=0,placeMapPins=False):
+        self.menu = []
+        self.selectIndicator=selectIndicator
+        self.selectKey=selectKey
+        self.length=length
+        self.width=width
+        self.shapes=shapes 
+        self.numberOfCuts=numberOfCuts
+        self.numberOfIslands=numberOfIslands
+        self.placeMapPins=placeMapPins
 
-shapes1 = [
-    Rect(rows=10, cols=10),
-    Rect(rows=8,  cols=15),
-    Rect(rows=3,  cols=7),
-    Rect(rows=5,  cols=12),
-    Rect(rows=2,  cols=20)
-]
-
-shapes2 = [
-    Rect(rows=5,  cols=30),
-    Rect(rows=6,  cols=20),
-    Rect(rows=5,  cols=25)
-]
-
-shapes3 = [
-    Rect(rows=50,  cols=10),
-    Rect(rows=75,  cols=15),
-    Rect(rows=100,  cols=5)
-]
-
-shapes4 = [
-    Rect(rows=2,  cols=7),
-    Rect(rows=3,  cols=6),
-    Rect(rows=4,  cols=5)
-]
-
-shapes5 = [
-    Rect(rows=30,  cols=70)
-]
-
-presets = {
-    "1 - Small" : {"Set": '1', "length": 18, "width": 40, "shapes": shapes1, "numberOfCuts": 2, "numberOfIslands": 7, "placeMapPins": "T"},
-    "2 - Medium" : {"Set": '2', "length": 36, "width": 100, "shapes": shapes2, "numberOfCuts": 3, "numberOfIslands": 15, "placeMapPins": "T"},
-    "3 - Large" : {"Set": '3', "length": 48, "width": 191, "shapes": shapes2, "numberOfCuts": 4, "numberOfIslands": 50, "placeMapPins": "T"},
-    "4 - Pocket sized" : {"Set": '4', "length": 15, "width": 25, "shapes": shapes1, "numberOfCuts": 2, "numberOfIslands": 5, "placeMapPins": "T"},
-    "5 - Long" : {"Set": '5', "length": 500, "width": 100, "shapes": shapes3, "numberOfCuts": 3, "numberOfIslands": 100, "placeMapPins": "T"},
-    "6 - Mess" : {"Set": '6', "length": 36, "width": 100, "shapes": shapes0, "numberOfCuts": 0, "numberOfIslands": 1000, "placeMapPins": "F"},
-    "7 - Box" : {"Set": '7', "length": 36, "width": 100, "shapes": shapes2, "numberOfCuts": 0, "numberOfIslands": 20, "placeMapPins": "T"},
-    "8 - Islands" : {"Set": '8', "length": 25, "width": 75, "shapes": shapes4, "numberOfCuts": 0, "numberOfIslands": 25, "placeMapPins": "T"},
-    "9 - Waterland" : {"Set": '9', "length": 20, "width": 50, "shapes": shapes0, "numberOfCuts": 1, "numberOfIslands": 1500, "placeMapPins": "F"},
-    "0 - Blob" : {"Set": '0', "length": 36, "width": 100, "shapes": shapes5, "numberOfCuts": 20, "numberOfIslands": 3, "placeMapPins": "F"},
-}
+    def loadOptions(self):
+        self.menu.append(Config(
+            selectIndicator="1 - Small", selectKey='1', length=18, width=40,
+            shapes = [
+                Rect(rows=10, cols=10), 
+                Rect(rows=8,  cols=15), 
+                Rect(rows=3,  cols=7), 
+                Rect(rows=5,  cols=12),
+                Rect(rows=2,  cols=20)
+            ], 
+            numberOfCuts=2, numberOfIslands=7, placeMapPins="T"))
+        self.menu.append(Config(
+            selectIndicator="2 - Medium", selectKey='2', length=36, width=100,
+            shapes = [
+                Rect(rows=5,  cols=30),
+                Rect(rows=6,  cols=20),
+                Rect(rows=5,  cols=25)
+            ],
+            numberOfCuts=3,numberOfIslands=15,placeMapPins="T"))
+        self.menu.append(Config(
+            selectIndicator="3 - Large", selectKey='3', length=48, width=191,
+            shapes = [
+                Rect(rows=5,  cols=30),
+                Rect(rows=6,  cols=20),
+                Rect(rows=5,  cols=25)
+            ],
+            numberOfCuts=4,numberOfIslands=50,placeMapPins="T"))
+        self.menu.append(Config(
+            selectIndicator="4 - Pocket sized", selectKey='4', length=15, width=25,
+            shapes = [
+                Rect(rows=10, cols=10), 
+                Rect(rows=8,  cols=15), 
+                Rect(rows=3,  cols=7), 
+                Rect(rows=5,  cols=12),
+                Rect(rows=2,  cols=20)
+            ],
+            numberOfCuts=2,numberOfIslands=5,placeMapPins="T"))
+        self.menu.append(Config(
+            selectIndicator="5 - Long", selectKey='5', length=500, width=100,
+            shapes = [
+                Rect(rows=50,  cols=10),
+                Rect(rows=75,  cols=15),
+                Rect(rows=100,  cols=5)
+            ],
+            numberOfCuts=3,numberOfIslands=100,placeMapPins="T"))
+        self.menu.append(Config(
+            selectIndicator="6 - Mess", selectKey='6', length=36, width=100,
+            shapes = [
+                Rect(rows=1, cols=1),
+                Rect(rows=2, cols=1),
+                Rect(rows=1, cols=2)
+            ],
+            numberOfCuts=0,numberOfIslands=1000,placeMapPins="F"))
+        self.menu.append(Config(
+            selectIndicator="7 - Box", selectKey='7', length=36, width=100,
+            shapes = [
+                Rect(rows=5,  cols=30),
+                Rect(rows=6,  cols=20),
+                Rect(rows=5,  cols=25)
+            ],
+            numberOfCuts=0,numberOfIslands=20,placeMapPins="T"))
+        self.menu.append(Config(
+            selectIndicator="8 - Islands", selectKey='8', length=25, width=75,
+            shapes = [
+                Rect(rows=2,  cols=7),
+                Rect(rows=3,  cols=6),
+                Rect(rows=4,  cols=5)
+            ],
+            numberOfCuts=0,numberOfIslands=25,placeMapPins="T"))
+        self.menu.append(Config(
+            selectIndicator="9 - Waterland", selectKey='9', length=20, width=50,
+            shapes = [
+                Rect(rows=1, cols=1),
+                Rect(rows=2, cols=1),
+                Rect(rows=1, cols=2)
+            ],
+            numberOfCuts=1,numberOfIslands=1500,placeMapPins="F"))
+        self.menu.append(Config(
+            selectIndicator="0 - Blob", selectKey='0', length=36, width=100,
+            shapes = [
+                Rect(rows=30,  cols=70)
+            ],
+            numberOfCuts=20,numberOfIslands=3,placeMapPins="F"))
 
 class Mapper:
     def configureFromInput(self, cmd):
         self.map_pins = ["*", "@", "!", ".", "+", "%", "&", "$", "#"]
         self.pinsInLegend = []
         self.mapGlyphs = {}
-        for i in presets:
-            if presets[i]["Set"] == cmd:
-                self.shapes = presets[i]["shapes"]
-                self.numberOfIslands = presets[i]["numberOfIslands"]
-                self.numberOfCuts = presets[i]["numberOfCuts"]
-                self.length = presets[i]["length"]
-                self.width = presets[i]["width"]
-                self.placeMapPins = presets[i]["placeMapPins"]
+        conf = Config()
+        conf.loadOptions()
+        for config in conf.menu:
+            if config.selectKey == cmd:
+                self.shapes = config.shapes
+                self.numberOfIslands = config.numberOfIslands
+                self.numberOfCuts = config.numberOfCuts
+                self.length = config.length
+                self.width = config.width
+                self.placeMapPins = config.placeMapPins
         for x in range(self.length * self.width):
             self.mapGlyphs[x] = "~"
         self.LS = [0]
@@ -276,9 +325,11 @@ class Mapper:
 
 def main():
     mapper = Mapper()
+    config = Config()
+    config.loadOptions()
     while True:
-        for i in presets:
-            print(i)
+        for conf in config.menu:
+            print(conf.selectIndicator)
         cmd = input(">")
         mapper.configureFromInput(cmd)
         for i in range(mapper.numberOfIslands):
