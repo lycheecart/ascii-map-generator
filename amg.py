@@ -4,41 +4,45 @@
 
 import random
 
-# - Lists of rectangles
+class Rect:
+    def __init__(self, rows=0, cols=0):
+        self.rows = rows 
+        self.cols = cols
+
 shapes0 = [
-    {"cols": 1, "rows": 1},
-    {"cols": 1, "rows": 2},
-    {"cols": 2, "rows": 1}
+    Rect(rows=1, cols=1),
+    Rect(rows=2, cols=1),
+    Rect(rows=1, cols=2)
 ]
 
 shapes1 = [
-    {"cols": 10, "rows": 10},
-    {"cols": 15, "rows": 8},
-    {"cols": 7, "rows": 3},
-    {"cols": 12, "rows": 5},
-    {"cols": 20, "rows": 2}
+    Rect(rows=10, cols=10),
+    Rect(rows=8,  cols=15),
+    Rect(rows=3,  cols=7),
+    Rect(rows=5,  cols=12),
+    Rect(rows=2,  cols=20)
 ]
 
 shapes2 = [
-    {"cols": 30, "rows": 5},
-    {"cols": 20, "rows": 6},
-    {"cols": 25, "rows": 5}
+    Rect(rows=5,  cols=30),
+    Rect(rows=6,  cols=20),
+    Rect(rows=5,  cols=25)
 ]
 
 shapes3 = [
-    {"cols": 10, "rows": 50},
-    {"cols": 15, "rows": 75},
-    {"cols": 5, "rows": 100}
+    Rect(rows=50,  cols=10),
+    Rect(rows=75,  cols=15),
+    Rect(rows=100,  cols=5)
 ]
 
 shapes4 = [
-    {"cols": 7, "rows": 2},
-    {"cols": 6, "rows": 3},
-    {"cols": 5, "rows": 4}
+    Rect(rows=2,  cols=7),
+    Rect(rows=3,  cols=6),
+    Rect(rows=4,  cols=5)
 ]
 
 shapes5 = [
-    {"cols": 70, "rows": 30}
+    Rect(rows=30,  cols=70)
 ]
 
 presets = {
@@ -114,18 +118,18 @@ def checkIslandBounds(x):
     global width
     y = int(x/width) + 1
     t = x - ((y - 1)*width)
-    return ((t + shapes[shapeI]["cols"]) <= width and (y + shapes[shapeI]["rows"]) <= length)
+    return ((t + shapes[shapeI].cols <= width and (y + shapes[shapeI].rows <= length)))
 
 # Function that places Box on x
 def placeIsland(i):
     global shapeI
     global width
     global mapGlyphs
-    for y in range(shapes[shapeI]["rows"]):
-        for x in range(shapes[shapeI]["cols"]):
+    for y in range(shapes[shapeI].rows):
+        for x in range(shapes[shapeI].cols):
             mapGlyphs[i] = "#"
             i +=1
-        i += (width - shapes[shapeI]["cols"])
+        i += (width - shapes[shapeI].cols)
 
 # Function that randomly picks a location/rectangle(box)
 def addIsland():
