@@ -59,7 +59,7 @@ presets = {
 }
 
 # Function that creates the basic map, defines stuff like size, legend, positions on left/right side, ect
-def Start(cmd):
+def configureFromInput(cmd):
     global mapGlyphs
     global map_pins 
     global pinsInLegend
@@ -332,7 +332,7 @@ def main():
         for i in presets:
             print(i)
         cmd = input(">")
-        Start(cmd)
+        configureFromInput(cmd)
         for i in range(numberOfIslands):
             addIsland()
         print("")
